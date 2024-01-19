@@ -12,7 +12,7 @@ import (
 )
 
 type GameSystem struct {
-	Entities []entities.RenderableEntity
+	Entities []*entities.RenderableEntity
 }
 
 func (gs *GameSystem) New(world *ecs.World) {
@@ -23,7 +23,7 @@ func (gs *GameSystem) New(world *ecs.World) {
 	basic := ecs.NewBasic()
 	renderable := components.Renderable{Image: img}
 	transform := components.Transform{
-		Pos:    maths.Vector2{X: 100, Y: 100},
+		Pos:    maths.Vector2{X: 0, Y: 0},
 		Scale:  maths.Vector2{X: 0.5, Y: 0.5},
 		Rotate: 0,
 	}
@@ -31,7 +31,7 @@ func (gs *GameSystem) New(world *ecs.World) {
 }
 
 func (gs *GameSystem) Add(basic *ecs.BasicEntity, rect *components.Renderable, transform *components.Transform) {
-	gs.Entities = append(gs.Entities, entities.RenderableEntity{BasicEntity: *basic, Renderable: *rect, Transform: *transform})
+	gs.Entities = append(gs.Entities, &entities.RenderableEntity{BasicEntity: *basic, Renderable: *rect, Transform: *transform})
 }
 
 func (gs *GameSystem) Update(dt float32) {

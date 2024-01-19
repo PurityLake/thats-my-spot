@@ -6,6 +6,7 @@ import (
 	"github.com/EngoEngine/ecs"
 	"github.com/PurityLake/thatsmyspot/systems"
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 type Game struct {
@@ -13,6 +14,16 @@ type Game struct {
 }
 
 func (g *Game) Update() error {
+	for _, system := range g.world.Systems() {
+		switch sys := system.(type) {
+		case *systems.GameSystem:
+			for _, entity := range sys.Entities {
+				if inpututil.IsKeyJustPressed(ebiten.KeyUp) {
+					entity.Rotate -= 90
+				}
+			}
+		}
+	}
 	g.world.Update(0.016)
 	return nil
 }
@@ -22,9 +33,10 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		switch sys := system.(type) {
 		case *systems.GameSystem:
 			for _, entity := range sys.Entities {
-				options := ebiten.DrawImageOptions{}
-				entity.GetDrawOptions(&options)
-				screen.DrawImage(entity.Image, &options)
+				bounds := entity.Image.Bounds()
+				w, h := bounds.Dx(), bounds.Dy()
+				options := entity.GetDrawOptions(float64(w), float64(h))
+				screen.DrawImage(entity.Image, options)
 			}
 		}
 	}
@@ -39,7 +51,7 @@ func main() {
 	ebiten.SetWindowTitle("Hello, World!")
 	world := ecs.World{}
 	world.AddSystem(&systems.GameSystem{})
-	if err := ebiten.RunGame(&Game{world}); err != nil {
+	if err := ebiten.RunGame(&Game{world: world}); err != nil {
 		log.Fatal(err)
 	}
 }

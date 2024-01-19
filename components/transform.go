@@ -1,6 +1,8 @@
 package components
 
 import (
+	"math"
+
 	"github.com/PurityLake/thatsmyspot/maths"
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -11,9 +13,13 @@ type Transform struct {
 	Rotate float64
 }
 
-func (t Transform) GetDrawOptions(options *ebiten.DrawImageOptions) {
+func (t Transform) GetDrawOptions(w, h float64) *ebiten.DrawImageOptions {
+	options := &ebiten.DrawImageOptions{}
 	options.GeoM.Reset()
+	options.GeoM.Translate(-w/2, -h/2)
 	options.GeoM.Scale(float64(t.Scale.X), float64(t.Scale.Y))
-	options.GeoM.Rotate(t.Rotate)
+	options.GeoM.Rotate((math.Pi / 180) * t.Rotate)
+	options.GeoM.Translate(w/2, h/2)
 	options.GeoM.Translate(float64(t.Pos.X), float64(t.Pos.Y))
+	return options
 }
