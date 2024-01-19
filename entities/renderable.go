@@ -8,4 +8,5 @@ import (
 type RenderableEntity struct {
 	ecs.BasicEntity
 	components.Renderable
+	components.Transform
 }
