@@ -20,28 +20,28 @@ func (r *RenderableEntity) Update() {
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyLeft) {
 		if r.Rotate == 270 {
-			r.Pos.X -= 32
+			r.Pos.X -= 40
 		} else {
 			r.Rotate = 270
 		}
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyRight) {
 		if r.Rotate == 90 {
-			r.Pos.X += 32
+			r.Pos.X += 40
 		} else {
 			r.Rotate = 90
 		}
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyUp) {
 		if r.Rotate == 0 {
-			r.Pos.Y -= 32
+			r.Pos.Y -= 40
 		} else {
 			r.Rotate = 0
 		}
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyDown) {
 		if r.Rotate == 180 {
-			r.Pos.Y += 32
+			r.Pos.Y += 40
 		} else {
 			r.Rotate = 180
 		}

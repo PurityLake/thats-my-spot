@@ -13,14 +13,6 @@ type Game struct {
 }
 
 func (g *Game) Update() error {
-	for _, system := range g.world.Systems() {
-		switch sys := system.(type) {
-		case *systems.GameSystem:
-			for _, entity := range sys.Entities {
-				entity.Update()
-			}
-		}
-	}
 	g.world.Update(0.016)
 	return nil
 }

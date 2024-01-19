@@ -19,7 +19,6 @@ func (t Transform) GetDrawOptions(w, h float64) *ebiten.DrawImageOptions {
 	options.GeoM.Translate(-w/2, -h/2)
 	options.GeoM.Scale(float64(t.Scale.X), float64(t.Scale.Y))
 	options.GeoM.Rotate((math.Pi / 180) * t.Rotate)
-	options.GeoM.Translate(w/2, h/2)
 	options.GeoM.Translate(float64(t.Pos.X), float64(t.Pos.Y))
 	return options
 }

@@ -20,8 +20,8 @@ type GameSystem struct {
 
 func (gs *GameSystem) New(world *ecs.World) {
 	var mapTiles []data.Tile
-	for x := 0; x < 10; x++ {
-		for y := 0; y < 10; y++ {
+	for x := 0; x < 20; x++ {
+		for y := 0; y < 20; y++ {
 			i := rand.Intn(data.MaxTile)
 			tile, err := data.NewTile(i)
 			if err != nil {
@@ -41,10 +41,10 @@ func (gs *GameSystem) New(world *ecs.World) {
 			Image: nil,
 		},
 		Map: components.Map{
-			Width:  10,
-			Height: 10,
-			TileW:  32,
-			TileH:  32,
+			Width:  20,
+			Height: 20,
+			TileW:  40,
+			TileH:  40,
 			Tiles:  mapTiles,
 		},
 	}
@@ -55,8 +55,8 @@ func (gs *GameSystem) New(world *ecs.World) {
 	basic := ecs.NewBasic()
 	renderable := components.Renderable{Image: img}
 	transform := components.Transform{
-		Pos:    maths.Vector2{X: 0, Y: 0},
-		Scale:  maths.Vector2{X: 0.5, Y: 0.5},
+		Pos:    maths.Vector2{X: 20, Y: 20},
+		Scale:  maths.Vector2{X: 0.25, Y: 0.25},
 		Rotate: 0,
 	}
 	gs.Add(&basic, &renderable, &transform, true)
