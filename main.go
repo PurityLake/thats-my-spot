@@ -45,7 +45,7 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 
 func main() {
 	ebiten.SetWindowSize(640, 480)
-	ebiten.SetWindowTitle("Hello, World!")
+	ebiten.SetWindowTitle("That's My Spot!")
 	world := ecs.World{}
 	world.AddSystem(&systems.GameSystem{})
 	if err := ebiten.RunGame(&Game{world: world}); err != nil {
