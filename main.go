@@ -3,13 +3,17 @@ package main
 import (
 	"log"
 
+	"github.com/EngoEngine/ecs"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
-type Game struct{}
+type Game struct {
+	world ecs.World
+}
 
 func (g *Game) Update() error {
+	g.world.Update(0.016)
 	return nil
 }
 

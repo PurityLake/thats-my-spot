@@ -2,7 +2,10 @@ module github.com/PurityLake/thatsmyspot
 
 go 1.21.6
 
-require github.com/hajimehoshi/ebiten/v2 v2.6.3
+require (
+	github.com/EngoEngine/ecs v1.0.5
+	github.com/hajimehoshi/ebiten/v2 v2.6.3
+)
 
 require (
 	github.com/ebitengine/purego v0.5.0 // indirect
