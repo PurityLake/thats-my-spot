@@ -29,6 +29,13 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	for _, system := range g.world.Systems() {
 		switch sys := system.(type) {
 		case *systems.GameSystem:
+			if sys.MapEntity.Image == nil {
+				continue
+			}
+			bounds := sys.MapEntity.Image.Bounds()
+			w, h := bounds.Dx(), bounds.Dy()
+			options := sys.MapEntity.GetDrawOptions(float64(w), float64(h))
+			screen.DrawImage(sys.MapEntity.Image, options)
 			for _, entity := range sys.Entities {
 				bounds := entity.Image.Bounds()
 				w, h := bounds.Dx(), bounds.Dy()
