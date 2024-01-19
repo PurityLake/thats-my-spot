@@ -27,11 +27,16 @@ func (gs *GameSystem) New(world *ecs.World) {
 		Scale:  maths.Vector2{X: 0.5, Y: 0.5},
 		Rotate: 0,
 	}
-	gs.Add(&basic, &renderable, &transform)
+	gs.Add(&basic, &renderable, &transform, true)
 }
 
-func (gs *GameSystem) Add(basic *ecs.BasicEntity, rect *components.Renderable, transform *components.Transform) {
-	gs.Entities = append(gs.Entities, &entities.RenderableEntity{BasicEntity: *basic, Renderable: *rect, Transform: *transform})
+func (gs *GameSystem) Add(basic *ecs.BasicEntity, rect *components.Renderable, transform *components.Transform, isPlayer bool) {
+	gs.Entities = append(gs.Entities, &entities.RenderableEntity{
+		BasicEntity: *basic,
+		Renderable:  *rect,
+		Transform:   *transform,
+		IsPlayer:    isPlayer,
+	})
 }
 
 func (gs *GameSystem) Update(dt float32) {
