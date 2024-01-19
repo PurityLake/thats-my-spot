@@ -7,6 +7,7 @@ import (
 	"github.com/EngoEngine/ecs"
 	"github.com/PurityLake/thatsmyspot/components"
 	"github.com/PurityLake/thatsmyspot/entities"
+	"github.com/PurityLake/thatsmyspot/maths"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
@@ -19,7 +20,13 @@ func (gs *GameSystem) New(world *ecs.World) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	gs.Add(&ecs.BasicEntity{}, &components.Renderable{Image: img})
+	renderable := components.Renderable{
+		Image:  img,
+		Pos:    maths.Vector2{X: 100, Y: 100},
+		Scale:  maths.Vector2{X: 0.5, Y: 0.5},
+		Rotate: 0.0,
+	}
+	gs.Add(&ecs.BasicEntity{}, &renderable)
 }
 
 func (gs *GameSystem) Add(basic *ecs.BasicEntity, rect *components.Renderable) {

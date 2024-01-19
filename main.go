@@ -22,14 +22,16 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		switch sys := system.(type) {
 		case *systems.GameSystem:
 			for _, entity := range sys.Entities {
-				screen.DrawImage(entity.Image, nil)
+				options := ebiten.DrawImageOptions{}
+				entity.GetDrawOptions(&options)
+				screen.DrawImage(entity.Image, &options)
 			}
 		}
 	}
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
-	return 320, 240
+	return 640, 480
 }
 
 func main() {
