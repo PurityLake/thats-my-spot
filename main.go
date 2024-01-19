@@ -4,8 +4,8 @@ import (
 	"log"
 
 	"github.com/EngoEngine/ecs"
+	"github.com/PurityLake/thatsmyspot/systems"
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
 type Game struct {
@@ -18,7 +18,14 @@ func (g *Game) Update() error {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	ebitenutil.DebugPrint(screen, "Hello, World!")
+	for _, system := range g.world.Systems() {
+		switch sys := system.(type) {
+		case *systems.GameSystem:
+			for _, entity := range sys.Entities {
+				screen.DrawImage(entity.Image, nil)
+			}
+		}
+	}
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
@@ -28,7 +35,9 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 func main() {
 	ebiten.SetWindowSize(640, 480)
 	ebiten.SetWindowTitle("Hello, World!")
-	if err := ebiten.RunGame(&Game{}); err != nil {
+	world := ecs.World{}
+	world.AddSystem(&systems.GameSystem{})
+	if err := ebiten.RunGame(&Game{world}); err != nil {
 		log.Fatal(err)
 	}
 }
