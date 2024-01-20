@@ -3,11 +3,7 @@ package mapreader
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"log"
-	"net/http"
-	"os"
-	"runtime"
 
 	"github.com/PurityLake/thatsmyspot/data"
 )
@@ -18,42 +14,12 @@ type (
 )
 
 func ReadJson(filename string) (map[string]interface{}, error) {
-	if runtime.GOOS == "js" {
-		resp, err := http.Get("assets/maps/tiled/map0.json")
-		if err != nil {
-			log.Fatal(err)
-			return nil, err
-		}
-		defer resp.Body.Close()
-
-		byteValue, err := io.ReadAll(resp.Body)
-		if err != nil {
-			log.Fatal(err)
-			return nil, err
-		}
-
-		var result map[string]interface{}
-		err = json.Unmarshal([]byte(byteValue), &result)
-		if err != nil {
-			log.Fatal(err)
-			return nil, err
-		}
-		return result, nil
-	}
-	jsonFile, err := os.Open(filename)
-	http.Get("asserts/maps/tiled/map0.json")
+	byteValue, err := data.GetFile(filename)
 	if err != nil {
+		fmt.Println("Error reading file")
 		log.Fatal(err)
 		return nil, err
 	}
-	defer jsonFile.Close()
-
-	byteValue, err := io.ReadAll(jsonFile)
-	if err != nil {
-		log.Fatal(err)
-		return nil, err
-	}
-
 	var result map[string]interface{}
 	err = json.Unmarshal([]byte(byteValue), &result)
 	if err != nil {
@@ -84,12 +50,19 @@ func ParseMapData(object JsonObject) map[string]data.Property {
 
 func ParseTilesetData(object JsonObject) map[string]data.Property {
 	properties := make(map[string]data.Property)
-	tiles := object["tiles"].(JsonArray)
+	tiles, ok := object["tiles"].(JsonArray)
+	if !ok {
+		log.Fatal("Could not parse map layers")
+	}
 	tileList := make([]data.Property, len(tiles))
 	for i, tile := range tiles {
 		tileObj := tile.(JsonObject)
 		tileProps := make(map[string]data.Property)
-		for _, value := range tileObj["properties"].(JsonArray) {
+		t, ok := tileObj["properties"].(JsonArray)
+		if !ok {
+			log.Fatal("Could not parse tile properties")
+		}
+		for _, value := range t {
 			prop := value.(JsonObject)
 			tileProps[prop["name"].(string)] = *data.NewProperty(prop["name"].(string), prop["type"].(string), prop["value"])
 		}
