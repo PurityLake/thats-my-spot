@@ -31,7 +31,7 @@ func (gs *GameSystem) New(world *ecs.World) {
 			mapTiles = append(mapTiles, *tile)
 		}
 	}
-	tileMap, err := components.NewTiledMap("assets/maps/tiled/map0.tmx")
+	tileMap, err := components.NewTiledMap("assets/maps/tiled/map0.png")
 	if err != nil {
 		log.Fatal(err)
 	}
