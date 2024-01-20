@@ -1,6 +1,8 @@
 package systems
 
 import (
+	"image"
+	"image/color"
 	_ "image/png"
 	"log"
 	"math/rand"
@@ -10,6 +12,7 @@ import (
 	"github.com/PurityLake/thatsmyspot/data"
 	"github.com/PurityLake/thatsmyspot/entities"
 	"github.com/PurityLake/thatsmyspot/maths"
+	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
@@ -31,9 +34,31 @@ func (gs *GameSystem) New(world *ecs.World) {
 			mapTiles = append(mapTiles, *tile)
 		}
 	}
-	tileMap, err := components.NewTiledMap("assets/maps/tiled/map0.png")
+	tileMap, err := components.NewTiledMap(
+		"assets/maps/tiled/map0.png",
+		"assets/maps/tiled/map0.json",
+		"assets/maps/tiled/jamegam.json")
 	if err != nil {
 		log.Fatal(err)
+	}
+	newImage := ebiten.NewImage(tileMap.Width, tileMap.Height)
+	width := tileMap.Width / tileMap.TileW
+	height := tileMap.Height / tileMap.TileH
+	for y := 0; y < height; y++ {
+		for x := 0; x < width; x++ {
+			subImage := newImage.SubImage(
+				image.Rect(x*tileMap.TileW, y*tileMap.TileH, (x+1)*tileMap.TileW, (y+1)*tileMap.TileH),
+			)
+			tile := tileMap.Tiles[y*height+x]
+			switch tile {
+			case data.EmptyTile:
+				subImage.(*ebiten.Image).Fill(color.RGBA{0, 255, 0, 255})
+			case data.WallTile:
+				subImage.(*ebiten.Image).Fill(color.RGBA{0, 0, 255, 255})
+			default:
+				subImage.(*ebiten.Image).Fill(color.RGBA{255, 0, 0, 255})
+			}
+		}
 	}
 	gs.TiledMapEntity = &entities.TiledMapEntity{
 		BasicEntity: ecs.NewBasic(),
@@ -44,7 +69,7 @@ func (gs *GameSystem) New(world *ecs.World) {
 			Anchor: maths.Vector2{X: 1.0, Y: 1.0},
 		},
 		Renderable: components.Renderable{
-			Image: nil,
+			Image: newImage,
 		},
 		TiledMap: *tileMap,
 	}
