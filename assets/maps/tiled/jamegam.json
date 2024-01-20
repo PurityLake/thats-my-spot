@@ -1,96 +1,108 @@
-{ "columns":3,
- "image":"jamegam.png",
- "imageheight":120,
- "imagewidth":120,
- "margin":0,
- "name":"jamegam",
- "spacing":0,
- "tilecount":9,
- "tiledversion":"1.10.2",
- "tileheight":40,
- "tiles":[
+{
+  "columns": 3,
+  "image": "jamegam.png",
+  "imageheight": 120,
+  "imagewidth": 120,
+  "margin": 0,
+  "name": "jamegam",
+  "spacing": 0,
+  "tilecount": 9,
+  "tiledversion": "1.10.2",
+  "tileheight": 40,
+  "tiles": [
+    {
+      "id": 0,
+      "properties": [
         {
-         "id":0,
-         "properties":[
-                {
-                 "name":"TileType",
-                 "type":"int",
-                 "value":0
-                }]
-        }, 
+          "name": "TileType",
+          "type": "int",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "properties": [
         {
-         "id":1,
-         "properties":[
-                {
-                 "name":"TileType",
-                 "type":"int",
-                 "value":0
-                }]
-        }, 
+          "name": "TileType",
+          "type": "int",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "properties": [
         {
-         "id":2,
-         "properties":[
-                {
-                 "name":"TileType",
-                 "type":"int",
-                 "value":0
-                }]
-        }, 
+          "name": "TileType",
+          "type": "int",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "properties": [
         {
-         "id":3,
-         "properties":[
-                {
-                 "name":"TileType",
-                 "type":"int",
-                 "value":0
-                }]
-        }, 
+          "name": "TileType",
+          "type": "int",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "properties": [
         {
-         "id":4,
-         "properties":[
-                {
-                 "name":"TileType",
-                 "type":"int",
-                 "value":1
-                }]
-        }, 
+          "name": "TileType",
+          "type": "int",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "properties": [
         {
-         "id":5,
-         "properties":[
-                {
-                 "name":"TileType",
-                 "type":"int",
-                 "value":0
-                }]
-        }, 
+          "name": "TileType",
+          "type": "int",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "properties": [
         {
-         "id":6,
-         "properties":[
-                {
-                 "name":"TileType",
-                 "type":"int",
-                 "value":0
-                }]
-        }, 
+          "name": "TileType",
+          "type": "int",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "properties": [
         {
-         "id":7,
-         "properties":[
-                {
-                 "name":"TileType",
-                 "type":"int",
-                 "value":0
-                }]
-        }, 
+          "name": "TileType",
+          "type": "int",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "properties": [
         {
-         "id":8,
-         "properties":[
-                {
-                 "name":"TileType",
-                 "type":"int",
-                 "value":0
-                }]
-        }],
- "tilewidth":40,
- "type":"tileset",
- "version":"1.10"
+          "name": "TileType",
+          "type": "int",
+          "value": 0
+        }
+      ]
+    }
+  ],
+  "tilewidth": 40,
+  "type": "tileset",
+  "version": "1.10"
 }
+
