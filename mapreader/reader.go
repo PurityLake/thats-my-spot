@@ -42,6 +42,10 @@ func ParseMapData(object JsonObject) map[string]data.Property {
 			mapList[j] = int(dataArr[j].(float64))
 		}
 		allLayers[i] = *data.NewProperty(layerObj["name"].(string), "array", mapList)
+		for _, mapProps := range layerObj["properties"].(JsonArray) {
+			prop := mapProps.(JsonObject)
+			properties[prop["name"].(string)] = *data.NewProperty(prop["name"].(string), prop["type"].(string), prop["value"])
+		}
 	}
 	properties["layers"] = *data.NewProperty("layers", "array", allLayers)
 

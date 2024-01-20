@@ -17,37 +17,31 @@ type TiledMap struct {
 	TempImage     *ebiten.Image
 }
 
-func NewTiledMap(imgFilename, mapFilename, tilesetFilename string) (*TiledMap, error) {
+func NewTiledMap(imgFilename, mapFilename, tilesetFilename string) (*TiledMap, map[string]data.Property, error) {
 	tiledMap, _, err := ebitenutil.NewImageFromFile(imgFilename)
 	if err != nil {
 		log.Fatal(err)
-		return nil, err
+		return nil, nil, err
 	}
 
 	mapObj, err := mapreader.ReadJson(mapFilename)
 	if err != nil {
 		log.Fatal(err)
-		return nil, err
+		return nil, nil, err
 	}
 	tilesetObj, err := mapreader.ReadJson(tilesetFilename)
 	if err != nil {
 		log.Fatal(err)
-		return nil, err
+		return nil, nil, err
 	}
 	mapData := mapreader.ParseMapData(mapObj)
 	tilesetData := mapreader.ParseTilesetData(tilesetObj)
 
-	propertyList, ok := tilesetData["properties"].Value.([]data.Property)
-	if !ok {
-		log.Fatal("Could not parse tileset properties")
-	}
+	propertyList := tilesetData["properties"].Value.([]data.Property)
 	tiles := make([][]data.Property, 0)
 	for _, prop := range propertyList {
-		props, ok := prop.Value.(map[string]data.Property)
+		props := prop.Value.(map[string]data.Property)
 		tileProps := make([]data.Property, 0)
-		if !ok {
-			log.Fatal("Could not parse tile properties")
-		}
 		for _, p := range props {
 			tileProps = append(tileProps, p)
 		}
@@ -73,5 +67,5 @@ func NewTiledMap(imgFilename, mapFilename, tilesetFilename string) (*TiledMap, e
 		TileH:     40,
 		TempImage: tiledMap,
 		Tiles:     tilesTypes,
-	}, nil
+	}, mapData, nil
 }
