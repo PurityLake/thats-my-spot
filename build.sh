@@ -14,7 +14,7 @@ cp -r ./assets ./build/wasm
 cp ./index.html ./build/wasm
 
 # Linux
-env GOOS=linux go build -o ./build/linux/thatsmyspot
+env GOOS=linux go build -ldflags="-s -w" -o ./build/linux/thatsmyspot
 cp -r ./assets ./build/linux
 
 # Windows
