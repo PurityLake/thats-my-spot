@@ -14,8 +14,9 @@ import (
 )
 
 type GameSystem struct {
-	Entities  []*entities.RenderableEntity
-	MapEntity *entities.MapEntity
+	Entities       []*entities.RenderableEntity
+	MapEntity      *entities.MapEntity
+	TiledMapEntity *entities.TiledMapEntity
 }
 
 func (gs *GameSystem) New(world *ecs.World) {
@@ -29,6 +30,23 @@ func (gs *GameSystem) New(world *ecs.World) {
 			}
 			mapTiles = append(mapTiles, *tile)
 		}
+	}
+	tileMap, err := components.NewTiledMap("assets/maps/tiled/map0.tmx")
+	if err != nil {
+		log.Fatal(err)
+	}
+	gs.TiledMapEntity = &entities.TiledMapEntity{
+		BasicEntity: ecs.NewBasic(),
+		Transform: components.Transform{
+			Pos:    maths.Vector2{X: 0, Y: 0},
+			Scale:  maths.Vector2{X: 1, Y: 1},
+			Rotate: 0,
+			Anchor: maths.Vector2{X: 1.0, Y: 1.0},
+		},
+		Renderable: components.Renderable{
+			Image: nil,
+		},
+		TiledMap: *tileMap,
 	}
 	gs.MapEntity = &entities.MapEntity{
 		BasicEntity: ecs.NewBasic(),
@@ -48,7 +66,7 @@ func (gs *GameSystem) New(world *ecs.World) {
 			Tiles:  mapTiles,
 		},
 	}
-	img, _, err := ebitenutil.NewImageFromFile("assets/car0.png")
+	img, _, err := ebitenutil.NewImageFromFile("assets/sprites/car0.png")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -74,6 +92,7 @@ func (gs *GameSystem) Add(basic *ecs.BasicEntity, rect *components.Renderable, t
 
 func (gs *GameSystem) Update(dt float32) {
 	gs.MapEntity.Update()
+	gs.TiledMapEntity.Update()
 	for _, entity := range gs.Entities {
 		entity.Update()
 	}
