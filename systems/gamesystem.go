@@ -36,7 +36,7 @@ func (gs *GameSystem) New(world *ecs.World) {
 			subImage := newImage.SubImage(
 				image.Rect(x*tileMap.TileW, y*tileMap.TileH, (x+1)*tileMap.TileW, (y+1)*tileMap.TileH),
 			)
-			tile := tileMap.Tiles[y*height+x]
+			tile := tileMap.Tiles[y*height+x].Id
 			switch tile {
 			case data.EmptyTile:
 				subImage.(*ebiten.Image).Fill(color.RGBA{0, 255, 0, 255})
@@ -88,10 +88,10 @@ func (gs *GameSystem) Add(basic *ecs.BasicEntity, rect *components.Renderable, t
 }
 
 func (gs *GameSystem) Update(dt float32) {
-	gs.TiledMapEntity.Update()
 	for _, entity := range gs.Entities {
-		entity.Update()
+		entity.Update(gs.TiledMapEntity)
 	}
+	gs.TiledMapEntity.Update()
 }
 
 func (gs *GameSystem) Remove(basic ecs.BasicEntity) {

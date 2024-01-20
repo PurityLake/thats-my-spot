@@ -22,12 +22,20 @@ type Tile struct {
 }
 
 func NewTile(id int) (*Tile, error) {
-	if id < 0 || id >= MaxTile {
+	if id >= MaxTile {
 		return nil, errors.New("invalid tile id")
 	}
 	return &Tile{
 		Id: id,
 	}, nil
+}
+
+func (t Tile) IsNil() bool {
+	return t.Id == -1
+}
+
+func (t Tile) IsWall() bool {
+	return t.Id == WallTile
 }
 
 func (t Tile) IsEmpty() bool {
