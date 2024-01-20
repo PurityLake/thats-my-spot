@@ -5,8 +5,8 @@ set -e
 ./clean.sh
 ./build.sh
 
-rm -f wasm.zip
+butler push ./build/wasm cultist-games/thats-my-spot:wasm
 
-zip -r wasm *.wasm *.js *.html assets/**/*
+butler push ./build/windows cultist-games/thats-my-spot:windows
 
-butler push wasm.zip cultist-games/thats-my-spot:wasm
+butler push ./build/linux cultist-games/thats-my-spot:linux
