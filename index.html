@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<html>
+<body>
 <script src="wasm_exec.js"></script>
 <script>
 // Polyfill
@@ -14,3 +16,5 @@ WebAssembly.instantiateStreaming(fetch("thatsmyspot.wasm"), go.importObject).the
     go.run(result.instance);
 });
 </script>
+</body>
+</html>
