@@ -12,8 +12,9 @@ import (
 )
 
 type Game struct {
-	world ecs.World
-	won   bool
+	world    ecs.World
+	mainMenu bool
+	won      bool
 }
 
 func (g *Game) Update() error {
@@ -24,6 +25,17 @@ func (g *Game) Update() error {
 		switch sys := system.(type) {
 		case *systems.GameSystem:
 			g.won = sys.TiledMapEntity.Won
+		case *systems.MainMenuSystem:
+			if g.mainMenu {
+				for _, entity := range sys.ButtonEntities {
+					if entity.Name == "start" && entity.Pressed {
+						g.mainMenu = false
+						g.world = ecs.World{}
+						g.world.AddSystem(&systems.GameSystem{})
+						break
+					}
+				}
+			}
 		}
 	}
 	return nil
@@ -48,12 +60,14 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				screen.DrawImage(entity.Image, options)
 			}
 		case *systems.MainMenuSystem:
-			screen.Fill(color.RGBA{0x55, 0xff, 0x55, 0xff})
-			for _, entity := range sys.ButtonEntities {
-				bounds := entity.Image.Bounds()
-				w, h := bounds.Dx(), bounds.Dy()
-				options := entity.GetDrawOptions(float64(w), float64(h))
-				screen.DrawImage(entity.Image, options)
+			if g.mainMenu {
+				screen.Fill(color.RGBA{0x55, 0xff, 0x55, 0xff})
+				for _, entity := range sys.ButtonEntities {
+					bounds := entity.Image.Bounds()
+					w, h := bounds.Dx(), bounds.Dy()
+					options := entity.GetDrawOptions(float64(w), float64(h))
+					screen.DrawImage(entity.Image, options)
+				}
 			}
 		}
 	}
@@ -72,7 +86,8 @@ func main() {
 	world := ecs.World{}
 	// world.AddSystem(&systems.GameSystem{})
 	world.AddSystem(&systems.MainMenuSystem{})
-	if err := ebiten.RunGame(&Game{world: world}); err != nil {
+	game := &Game{mainMenu: true, world: world}
+	if err := ebiten.RunGame(game); err != nil {
 		log.Fatal(err)
 	}
 }
