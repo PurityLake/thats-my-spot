@@ -1,6 +1,7 @@
 package main
 
 import (
+	"image/color"
 	"log"
 
 	"github.com/EngoEngine/ecs"
@@ -45,6 +46,14 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				options := entity.GetDrawOptions(float64(w), float64(h))
 				screen.DrawImage(entity.Image, options)
 			}
+		case *systems.MainMenuSystem:
+			screen.Fill(color.RGBA{0x55, 0xff, 0x55, 0xff})
+			for _, entity := range sys.ButtonEntities {
+				bounds := entity.Image.Bounds()
+				w, h := bounds.Dx(), bounds.Dy()
+				options := entity.GetDrawOptions(float64(w), float64(h))
+				screen.DrawImage(entity.Image, options)
+			}
 		}
 	}
 	if g.won {
@@ -60,7 +69,8 @@ func main() {
 	ebiten.SetWindowSize(640, 480)
 	ebiten.SetWindowTitle("That's My Spot!")
 	world := ecs.World{}
-	world.AddSystem(&systems.GameSystem{})
+	// world.AddSystem(&systems.GameSystem{})
+	world.AddSystem(&systems.MainMenuSystem{})
 	if err := ebiten.RunGame(&Game{world: world}); err != nil {
 		log.Fatal(err)
 	}
