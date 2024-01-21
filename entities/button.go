@@ -10,17 +10,20 @@ import (
 	"golang.org/x/image/font"
 )
 
-type ButtonEntity struct {
+type Button struct {
 	ecs.BasicEntity
 	components.Transform
 	components.Renderable
 	components.Button
 }
 
-func (be *ButtonEntity) Update(fontFace font.Face) {
+func (be *Button) Update(fontFace font.Face) {
 	x, y := ebiten.CursorPosition()
 	oldHovered := be.Hovered
-	be.Hovered = be.Bounds.IsPointInBounds(x, y)
+	localBounds := be.Bounds
+	localBounds.X -= localBounds.W / 2
+	localBounds.Y -= localBounds.H / 2
+	be.Hovered = localBounds.IsPointInBounds(x, y)
 	if oldHovered != be.Hovered {
 		be.Redraw(fontFace)
 	}
@@ -29,7 +32,7 @@ func (be *ButtonEntity) Update(fontFace font.Face) {
 	}
 }
 
-func (be *ButtonEntity) Redraw(fontFace font.Face) {
+func (be *Button) Redraw(fontFace font.Face) {
 	if be.Hovered {
 		be.Image.Fill(be.HoverColor)
 	} else {

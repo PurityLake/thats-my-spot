@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/EngoEngine/ecs"
+	"github.com/PurityLake/thatsmyspot/constants"
 	"github.com/PurityLake/thatsmyspot/systems"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -62,11 +63,11 @@ func (g *Game) Draw(screen *ebiten.Image) {
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
-	return 640, 480
+	return constants.WindowWidth, constants.WindowHeight
 }
 
 func main() {
-	ebiten.SetWindowSize(640, 480)
+	ebiten.SetWindowSize(constants.WindowWidth, constants.WindowHeight)
 	ebiten.SetWindowTitle("That's My Spot!")
 	world := ecs.World{}
 	// world.AddSystem(&systems.GameSystem{})
