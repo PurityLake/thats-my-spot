@@ -12,8 +12,8 @@ import (
 )
 
 type GameSystem struct {
-	Entities       []*entities.RenderableEntity
-	TiledMapEntity *entities.TiledMapEntity
+	Entities []*entities.RenderableEntity
+	TiledMap *entities.TiledMap
 }
 
 func (gs *GameSystem) New(world *ecs.World) {
@@ -24,7 +24,7 @@ func (gs *GameSystem) New(world *ecs.World) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	gs.TiledMapEntity = &entities.TiledMapEntity{
+	gs.TiledMap = &entities.TiledMap{
 		BasicEntity: ecs.NewBasic(),
 		Transform: components.Transform{
 			Pos:    maths.Vector2{X: 0, Y: 0},
@@ -69,9 +69,9 @@ func (gs *GameSystem) Add(basic *ecs.BasicEntity, rect *components.Renderable, t
 
 func (gs *GameSystem) Update(dt float32) {
 	for _, entity := range gs.Entities {
-		entity.Update(gs.TiledMapEntity)
+		entity.Update(gs.TiledMap)
 	}
-	gs.TiledMapEntity.Update()
+	gs.TiledMap.Update()
 }
 
 func (gs *GameSystem) Remove(basic ecs.BasicEntity) {

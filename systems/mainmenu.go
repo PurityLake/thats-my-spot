@@ -30,22 +30,22 @@ var ButtonList = []ButtonEntry{
 	{
 		X:          constants.HalfWindowWidth,
 		Y:          constants.HalfWindowHeight + 100,
-		W:          150,
-		H:          30,
+		W:          constants.ButtonWidth,
+		H:          constants.ButtonHeight,
 		Text:       "Start Game",
 		Name:       "start",
-		Color:      color.RGBA{0xff, 0xff, 0xff, 0xff},
-		HoverColor: color.RGBA{0xff, 0x00, 0x00, 0xff},
+		Color:      constants.ButtonColor,
+		HoverColor: constants.ButtonHoverColor,
 	},
 	{
 		X:          constants.HalfWindowWidth,
 		Y:          constants.HalfWindowHeight + 150,
-		W:          150,
-		H:          30,
+		W:          constants.ButtonWidth,
+		H:          constants.ButtonHeight,
 		Text:       "Exit Game",
 		Name:       "exit",
-		Color:      color.RGBA{0xff, 0xff, 0xff, 0xff},
-		HoverColor: color.RGBA{0xff, 0x00, 0x00, 0xff},
+		Color:      constants.ButtonColor,
+		HoverColor: constants.ButtonHoverColor,
 	},
 }
 
@@ -105,7 +105,7 @@ func (mm *MainMenuSystem) New(world *ecs.World) {
 		}
 
 		image := ebiten.NewImage(button.Bounds.W, button.Bounds.H)
-		image.Fill(color.RGBA{0xff, 0xff, 0xff, 0xff})
+		image.Fill(constants.ButtonColor)
 		bounds, _ := font.BoundString(fontFace, button.Text)
 		text.Draw(image, button.Text, fontFace,
 			button.Bounds.W/2-bounds.Max.X.Ceil()/2,

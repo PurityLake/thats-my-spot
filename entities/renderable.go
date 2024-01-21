@@ -17,7 +17,7 @@ type RenderableEntity struct {
 	IsPlayer bool
 }
 
-func (r *RenderableEntity) Update(mapEntity *TiledMapEntity) {
+func (r *RenderableEntity) Update(mapEntity *TiledMap) {
 	if !r.IsPlayer {
 		return
 	}

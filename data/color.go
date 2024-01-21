@@ -1,7 +1,6 @@
 package data
 
 import (
-	"fmt"
 	"image/color"
 	"strconv"
 )
@@ -15,6 +14,5 @@ func HexToRGBA(hex string) color.RGBA {
 	r := uint8(colorInt >> 16)
 	g := uint8(colorInt >> 8)
 	b := uint8(colorInt)
-	fmt.Println(r, g, b)
 	return color.RGBA{r, g, b, 255}
 }

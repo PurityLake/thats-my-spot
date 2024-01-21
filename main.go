@@ -24,7 +24,7 @@ func (g *Game) Update() error {
 	for _, system := range g.world.Systems() {
 		switch sys := system.(type) {
 		case *systems.GameSystem:
-			g.won = sys.TiledMapEntity.Won
+			g.won = sys.TiledMap.Won
 		case *systems.MainMenuSystem:
 			if g.mainMenu {
 				for _, entity := range sys.ButtonEntities {
@@ -45,14 +45,14 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	for _, system := range g.world.Systems() {
 		switch sys := system.(type) {
 		case *systems.GameSystem:
-			if sys.TiledMapEntity.Image == nil {
+			if sys.TiledMap.Image == nil {
 				continue
 			}
-			screen.Fill(sys.TiledMapEntity.BackgroundColor)
-			bounds := sys.TiledMapEntity.Image.Bounds()
+			screen.Fill(sys.TiledMap.BackgroundColor)
+			bounds := sys.TiledMap.Image.Bounds()
 			w, h := bounds.Dx(), bounds.Dy()
-			options := sys.TiledMapEntity.GetDrawOptions(float64(w), float64(h))
-			screen.DrawImage(sys.TiledMapEntity.Image, options)
+			options := sys.TiledMap.GetDrawOptions(float64(w), float64(h))
+			screen.DrawImage(sys.TiledMap.Image, options)
 			for _, entity := range sys.Entities {
 				bounds := entity.Image.Bounds()
 				w, h := bounds.Dx(), bounds.Dy()
