@@ -17,6 +17,7 @@ import (
 
 type MainMenuSystem struct {
 	ButtonEntities []*entities.ButtonEntity
+	FontFace       font.Face
 }
 
 func (mm *MainMenuSystem) New(world *ecs.World) {
@@ -28,6 +29,8 @@ func (mm *MainMenuSystem) New(world *ecs.World) {
 		Anchor: maths.Vector2{X: 1.0, Y: 1.0},
 	}
 	rect := maths.Bounds{
+		X: int(transform.Pos.X),
+		Y: int(transform.Pos.Y),
 		W: 150,
 		H: 30,
 	}
@@ -51,6 +54,7 @@ func (mm *MainMenuSystem) New(world *ecs.World) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	mm.FontFace = fontFace
 
 	image := ebiten.NewImage(rect.W, rect.H)
 	image.Fill(color.RGBA{0xff, 0xff, 0xff, 0xff})
@@ -62,8 +66,13 @@ func (mm *MainMenuSystem) New(world *ecs.World) {
 	}
 
 	button := components.Button{
-		Bounds:  rect,
-		Hovered: false,
+		Bounds:     rect,
+		Hovered:    false,
+		Text:       label,
+		Pressed:    false,
+		Name:       "start",
+		Color:      color.RGBA{0xff, 0xff, 0xff, 0xff},
+		HoverColor: color.RGBA{0xff, 0x00, 0x00, 0xff},
 	}
 
 	mm.Add(&basic, &transform, &renderable, &button)
@@ -80,6 +89,9 @@ func (mm *MainMenuSystem) Add(basic *ecs.BasicEntity, transform *components.Tran
 }
 
 func (mm *MainMenuSystem) Update(dt float32) {
+	for _, entity := range mm.ButtonEntities {
+		entity.Update(mm.FontFace)
+	}
 }
 
 func (mm *MainMenuSystem) Remove(basic ecs.BasicEntity) {
