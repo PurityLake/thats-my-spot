@@ -62,5 +62,6 @@ func (r *RenderableEntity) Update(mapEntity *TiledMapEntity) {
 			log.Fatal(err)
 		}
 		r.Pos.X, r.Pos.Y = mapEntity.ScreenPosFromMapPos(newX, newY)
+		mapEntity.HasWon(newX, newY)
 	}
 }

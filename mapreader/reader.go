@@ -3,6 +3,7 @@ package mapreader
 import (
 	"encoding/json"
 	"fmt"
+	"image/color"
 	"log"
 
 	"github.com/PurityLake/thatsmyspot/data"
@@ -31,6 +32,13 @@ func ReadJson(filename string) (map[string]interface{}, error) {
 
 func ParseMapData(object JsonObject) map[string]data.Property {
 	properties := make(map[string]data.Property)
+	bgcolor, ok := object["backgroundcolor"].(string)
+	if !ok {
+		properties["backgroundcolor"] = *data.NewProperty("backgroundcolor", "color", color.RGBA{0, 0, 0, 255})
+	} else {
+		colorValue := data.HexToRGBA(bgcolor)
+		properties["backgroundcolor"] = *data.NewProperty("backgroundcolor", "color", colorValue)
+	}
 	layers := object["layers"].(JsonArray)
 	allLayers := make([]data.Property, len(layers))
 	for i, layer := range layers {

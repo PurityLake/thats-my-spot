@@ -1,17 +1,13 @@
 package systems
 
 import (
-	"image"
-	"image/color"
 	_ "image/png"
 	"log"
 
 	"github.com/EngoEngine/ecs"
 	"github.com/PurityLake/thatsmyspot/components"
-	"github.com/PurityLake/thatsmyspot/data"
 	"github.com/PurityLake/thatsmyspot/entities"
 	"github.com/PurityLake/thatsmyspot/maths"
-	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
@@ -27,25 +23,6 @@ func (gs *GameSystem) New(world *ecs.World) {
 		"assets/maps/tiled/jamegam.json")
 	if err != nil {
 		log.Fatal(err)
-	}
-	newImage := ebiten.NewImage(tileMap.Width, tileMap.Height)
-	width := tileMap.Width / tileMap.TileW
-	height := tileMap.Height / tileMap.TileH
-	for y := 0; y < height; y++ {
-		for x := 0; x < width; x++ {
-			subImage := newImage.SubImage(
-				image.Rect(x*tileMap.TileW, y*tileMap.TileH, (x+1)*tileMap.TileW, (y+1)*tileMap.TileH),
-			)
-			tile := tileMap.Tiles[y*height+x].Id
-			switch tile {
-			case data.EmptyTile:
-				subImage.(*ebiten.Image).Fill(color.RGBA{0, 255, 0, 255})
-			case data.WallTile:
-				subImage.(*ebiten.Image).Fill(color.RGBA{0, 0, 255, 255})
-			default:
-				subImage.(*ebiten.Image).Fill(color.RGBA{255, 0, 0, 255})
-			}
-		}
 	}
 	gs.TiledMapEntity = &entities.TiledMapEntity{
 		BasicEntity: ecs.NewBasic(),
@@ -70,7 +47,10 @@ func (gs *GameSystem) New(world *ecs.World) {
 	basic := ecs.NewBasic()
 	renderable := components.Renderable{Image: img}
 	transform := components.Transform{
-		Pos:    maths.Vector2{X: float32(20 + (playerX * tileMap.TileW)), Y: float32(20 + (playerY * tileMap.TileH))},
+		Pos: maths.Vector2{
+			X: float32(20 + (playerX * tileMap.TileW)),
+			Y: float32(20 + (playerY * tileMap.TileH)),
+		},
 		Scale:  maths.Vector2{X: 0.25, Y: 0.25},
 		Rotate: playerRotation,
 	}

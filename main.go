@@ -6,14 +6,24 @@ import (
 	"github.com/EngoEngine/ecs"
 	"github.com/PurityLake/thatsmyspot/systems"
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
 type Game struct {
 	world ecs.World
+	won   bool
 }
 
 func (g *Game) Update() error {
-	g.world.Update(0.016)
+	if !g.won {
+		g.world.Update(0.016)
+	}
+	for _, system := range g.world.Systems() {
+		switch sys := system.(type) {
+		case *systems.GameSystem:
+			g.won = sys.TiledMapEntity.Won
+		}
+	}
 	return nil
 }
 
@@ -24,6 +34,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			if sys.TiledMapEntity.Image == nil {
 				continue
 			}
+			screen.Fill(sys.TiledMapEntity.BackgroundColor)
 			bounds := sys.TiledMapEntity.Image.Bounds()
 			w, h := bounds.Dx(), bounds.Dy()
 			options := sys.TiledMapEntity.GetDrawOptions(float64(w), float64(h))
@@ -35,6 +46,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				screen.DrawImage(entity.Image, options)
 			}
 		}
+	}
+	if g.won {
+		ebitenutil.DebugPrint(screen, "You won!")
 	}
 }
 

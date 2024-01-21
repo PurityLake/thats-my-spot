@@ -6,10 +6,12 @@ import (
 )
 
 const (
-	EmptyTile = 0
-	WallTile  = 1
-	CarTile   = 2
-	MaxTile   = 3
+	EmptyTile = iota
+	WallTile
+	CarTile
+	PretendTile
+	FinishTile
+	MaxTile
 )
 
 var (
@@ -39,5 +41,5 @@ func (t Tile) IsWall() bool {
 }
 
 func (t Tile) IsEmpty() bool {
-	return t.Id == EmptyTile
+	return t.Id == EmptyTile || t.Id == FinishTile
 }

@@ -2,6 +2,7 @@ package components
 
 import (
 	"errors"
+	"image/color"
 	_ "image/png"
 	"log"
 
@@ -13,10 +14,12 @@ import (
 )
 
 type TiledMap struct {
-	Width, Height int
-	TileW, TileH  int
-	Tiles         []data.Tile
-	TempImage     *ebiten.Image
+	Width, Height   int
+	TileW, TileH    int
+	Tiles           []data.Tile
+	BackgroundColor color.RGBA
+	TempImage       *ebiten.Image
+	Won             bool
 }
 
 func NewTiledMap(imgFilename, mapFilename, tilesetFilename string) (*TiledMap, map[string]data.Property, error) {
@@ -62,15 +65,26 @@ func NewTiledMap(imgFilename, mapFilename, tilesetFilename string) (*TiledMap, m
 			tilesTypes = append(tilesTypes, *t)
 		}
 	}
+	backgroundcolor := mapData["backgroundcolor"].Value.(color.RGBA)
 	bounds := tiledMap.Bounds()
 	return &TiledMap{
-		Width:     bounds.Dx(),
-		Height:    bounds.Dy(),
-		TileW:     40,
-		TileH:     40,
-		TempImage: tiledMap,
-		Tiles:     tilesTypes,
+		Width:           bounds.Dx(),
+		Height:          bounds.Dy(),
+		TileW:           40,
+		TileH:           40,
+		TempImage:       tiledMap,
+		BackgroundColor: backgroundcolor,
+		Tiles:           tilesTypes,
 	}, mapData, nil
+}
+
+func (m *TiledMap) HasWon(x, y int) bool {
+	tile, err := m.GetTile(x, y)
+	if err != nil {
+		return false
+	}
+	m.Won = tile.Id == data.FinishTile
+	return tile.Id == data.FinishTile
 }
 
 func (m *TiledMap) GetTile(x, y int) (*data.Tile, error) {
